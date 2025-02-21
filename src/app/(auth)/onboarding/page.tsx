@@ -41,11 +41,6 @@ export default async function Onboarding() {
           <Button size="lg" className="w-full" variant="outline" asChild>
             <Link href="/onboarding/athlete">I&apos;m an Athlete</Link>
           </Button>
-          <Button size="lg" className="w-full" variant="default" asChild>
-            <Link href="/onboarding/business">
-              I&apos;m a Gym or Personal Trainer
-            </Link>
-          </Button>
         </div>
       </div>
     </div>
