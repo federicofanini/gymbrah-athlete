@@ -1,6 +1,5 @@
 "use server";
 
-import { checkBusiness } from "@/actions/business/onboarding/check-business";
 import { prisma } from "@/lib/db";
 import { Cookies } from "@/utils/constants";
 import { LogEvents } from "@/utils/events/events";
@@ -14,12 +13,16 @@ import type { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
   const cookieStore = await cookies();
-  const { searchParams, origin } = new URL(req.url);
-  const code = searchParams.get("code");
-  const provider = searchParams.get("provider");
-  const returnTo = searchParams.get("return_to") ?? "/";
+  const requestUrl = new URL(req.url);
+  const code = requestUrl.searchParams.get("code");
+  const returnTo = requestUrl.searchParams.get("return_to");
+  const provider = requestUrl.searchParams.get("provider");
 
-  console.log("returnTo", returnTo);
+  if (provider) {
+    cookieStore.set(Cookies.PreferredSignInProvider, provider, {
+      expires: addYears(new Date(), 1),
+    });
+  }
 
   if (provider) {
     cookieStore.set(Cookies.PreferredSignInProvider, provider, {
@@ -57,27 +60,17 @@ export async function GET(req: NextRequest) {
 
         let redirectPath = "/onboarding";
         if (userData?.full_name) {
-          const businessCheck = await checkBusiness({ user_id: userId });
-          redirectPath = businessCheck?.data?.success
-            ? "/business"
-            : "/athlete";
+          redirectPath = "/athlete";
         }
 
-        const forwardedHost = req.headers.get("x-forwarded-host");
-        const isLocalEnv = process.env.NODE_ENV === "development";
+        return NextResponse.redirect(`${requestUrl.origin}${redirectPath}`);
+      }
 
-        if (isLocalEnv) {
-          return NextResponse.redirect(`${origin}${redirectPath}`);
-        } else if (forwardedHost) {
-          return NextResponse.redirect(
-            `https://${forwardedHost}${redirectPath}`
-          );
-        } else {
-          return NextResponse.redirect(`${origin}${redirectPath}`);
-        }
+      if (returnTo) {
+        return NextResponse.redirect(`${requestUrl.origin}/${returnTo}`);
       }
     }
   }
 
-  return NextResponse.redirect(`${origin}/auth/auth-code-error`);
+  return NextResponse.redirect(`${requestUrl.origin}/auth/auth-code-error`);
 }
