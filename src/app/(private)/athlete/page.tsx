@@ -10,9 +10,11 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getUserGamificationData } from "@/actions/achievements/get-user-data";
 import { getUserMetadata } from "@/utils/supabase/database/cached-queries";
 import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import OutlinedButton from "@/components/ui/outlined-button";
 
 async function BlackboardWrapper() {
   const [workoutsFromBusinessResponse, workoutsFromAthleteResponse] =
@@ -28,12 +30,32 @@ async function BlackboardWrapper() {
 
   return (
     <div className="w-full p-4 space-y-6 mb-4 sm:p-6 sm:space-y-8 sm:mb-6 md:px-8 md:py-6 md:space-y-10 lg:space-y-14 lg:mb-10">
-      {workoutsFromAthlete.length > 0 && (
+      {workoutsFromAthlete.length > 0 ? (
         <WorkoutFromAthlete
           workouts={workoutsFromAthlete}
           businessName="My Workouts"
         />
+      ) : (
+        <Card className="min-h-[280px] md:min-h-[320px]">
+          <CardHeader className="p-3 md:p-4 lg:p-6">
+            <h3 className="text-lg font-semibold">My Workouts</h3>
+          </CardHeader>
+          <CardContent className="p-3 md:p-4 lg:p-6 flex items-center justify-center">
+            <p className="text-muted-foreground text-center">
+              You haven&apos;t created any workouts yet. Start by creating your
+              first workout routine.
+            </p>
+          </CardContent>
+          <CardFooter className="p-3 md:p-4 lg:p-6 flex justify-center">
+            <OutlinedButton variant="secondary" className="hover:text-white">
+              <Link href="/athlete/workouts?tab=workout-builder">
+                Create Workout
+              </Link>
+            </OutlinedButton>
+          </CardFooter>
+        </Card>
       )}
+
       {workoutsFromBusiness.length > 0 && (
         <WorkoutFromBusiness
           workouts={workoutsFromBusiness}
@@ -82,7 +104,6 @@ function LoadingSkeleton() {
 }
 
 export default async function Blackboard() {
-  const data = await getUserGamificationData();
   const profile = await getUserMetadata();
 
   if (!profile) {
