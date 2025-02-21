@@ -1,8 +1,8 @@
 import { LogoIcon } from "@/components/logo";
-import { MobileMenu } from "@/components/private/b2b/mobile-menu";
+import { MobileMenu } from "@/components/private/b2c/mobile-menu";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { UserMenu } from "@/components/private/b2b/user-menu";
+import { UserMenu } from "@/components/private/b2c/user-menu";
 import { AchievementsButton } from "../b2b/achievements-button";
 import { AthleteCodeDisplay } from "./athlete-code";
 import { SettingsButton } from "./settings-button";
