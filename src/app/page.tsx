@@ -14,6 +14,8 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 import { AthleteCodeBanner } from "@/components/athlete-code-banner";
+import { redirect } from "next/navigation";
+import { createClient } from "@/utils/supabase/server";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -34,6 +36,15 @@ export default async function LoginPage({
     (await isEU()) && !cookieStore.has(Cookies.TrackingConsent);
   const { device } = userAgent({ headers: await headers() });
   const athleteCodeCookie = searchParams.athlete_code;
+
+  const supabase = await createClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (session) {
+    redirect("/athlete");
+  }
 
   let moreSignInOptions = null;
   let preferredSignInOption =

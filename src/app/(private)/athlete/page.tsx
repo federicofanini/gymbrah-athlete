@@ -58,7 +58,7 @@ export default async function Blackboard() {
 
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <AchievementsPage data={data} profile={profile} />
+      {/* <AchievementsPage data={data} profile={profile} /> */}
       <BlackboardWrapper />
     </Suspense>
   );
