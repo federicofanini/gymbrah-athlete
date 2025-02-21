@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { useQueryState } from "nuqs";
 import { useRouter } from "next/navigation";
 import { ExerciseTable } from "./exercise-table";
+import { getAthleteId } from "@/actions/athlete/athlete-id";
+import { assignWorkout } from "@/actions/workout/assign-workout";
 
 interface Exercise {
   id: string;
@@ -133,13 +135,32 @@ export function WorkoutBuilder({
     setIsSubmitting(true);
 
     try {
+      const athleteIdResult = await getAthleteId();
+
+      if (!athleteIdResult?.data?.success) {
+        toast.error("Failed to get athlete ID");
+        return;
+      }
+
       const result = await createWorkout({
         name,
         exercises: selectedExercises,
       });
 
       if (result?.data?.success) {
-        toast.success("Workout created successfully");
+        // Assign the workout to self
+        const assignResult = await assignWorkout({
+          workoutId: result.data.data.id,
+          athleteId: athleteIdResult.data.data,
+          businessId: "self assigned",
+        });
+
+        if (!assignResult?.data?.success) {
+          toast.error("Workout created but failed to self-assign");
+          return;
+        }
+
+        toast.success("Workout created and assigned successfully");
         setName("");
         setSelectedExercises([]);
         router.refresh();

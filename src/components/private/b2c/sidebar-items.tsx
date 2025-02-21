@@ -1,4 +1,4 @@
-import { Medal } from "lucide-react";
+import { Dumbbell, Medal } from "lucide-react";
 import { MdSportsGymnastics } from "react-icons/md";
 
 export const sidebarItems = [
@@ -7,14 +7,14 @@ export const sidebarItems = [
     label: "Home",
     path: `/athlete`,
   },
+  //{
+  //  icon: Medal,
+  //  label: "Achievements",
+  //  path: `/athlete/achievements`,
+  //},
   {
-    icon: Medal,
-    label: "Achievements",
-    path: `/athlete/achievements`,
+    icon: Dumbbell,
+    label: "Workouts",
+    path: `/athlete/workouts`,
   },
-  // {
-  //   icon: Dumbbell,
-  //   label: "Workouts",
-  //   path: `/athlete/workouts`,
-  // },
 ];

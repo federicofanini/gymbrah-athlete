@@ -5,7 +5,6 @@ import { useQueryState } from "nuqs";
 import { ExerciseTable } from "./exercise-table";
 import { WorkoutBuilder } from "./workout-builder";
 import { YourWorkouts } from "./your-workouts";
-import { AssignedWorkout } from "./assigned-workout";
 
 interface Exercise {
   id: string;
@@ -72,10 +71,6 @@ interface WorkoutPageProps {
   };
   initialExercises: Exercise[];
   workouts: Workout[];
-  athletes: {
-    athletes: Athlete[];
-    pagination: PaginatedResponse;
-  };
   assignedWorkouts: AssignedWorkout[];
 }
 
