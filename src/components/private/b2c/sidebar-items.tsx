@@ -1,5 +1,10 @@
 import { Dumbbell, Medal } from "lucide-react";
-import { MdBatchPrediction, MdSportsGymnastics } from "react-icons/md";
+import {
+  MdApps,
+  MdAppShortcut,
+  MdBatchPrediction,
+  MdSportsGymnastics,
+} from "react-icons/md";
 
 export const sidebarItems = [
   {
@@ -21,5 +26,10 @@ export const sidebarItems = [
     icon: MdBatchPrediction,
     label: "Feedback",
     path: `/athlete/feedback`,
+  },
+  {
+    icon: MdAppShortcut,
+    label: "Mobile App",
+    path: `/athlete/mobile-app`,
   },
 ];
